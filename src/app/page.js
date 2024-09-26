@@ -51,14 +51,16 @@ const Home = () => {
     setEditIndex(index);
   };
 
-  const handleToggleComplete = (index) => {
+  const handleToggleComplete = (e, index) => {
+    e.stopPropagation(); // Prevent modal from opening
     const updatedTasks = tasks.map((task, idx) =>
       idx === index ? { ...task, completed: !task.completed } : task
     );
     setTasks(updatedTasks);
   };
 
-  const handleDeleteTask = (index) => {
+  const handleDeleteTask = (e, index) => {
+    e.stopPropagation(); // Prevent modal from opening
     const updatedTasks = tasks.filter((_, idx) => idx !== index);
     setTasks(updatedTasks);
   };
@@ -141,21 +143,21 @@ const Home = () => {
                     <span className="cursor-pointer text-left text-white">{task.title}</span>
                     <div className="flex space-x-2">
                       <button
-                        onClick={() => handleToggleComplete(index)}
+                        onClick={(e) => handleToggleComplete(e, index)}
                         className="text-green-400 hover:text-green-500 transition-colors duration-300"
                       >
                         <FiCircle size={24} />
                       </button>
 
                       <button
-                        onClick={() => handleEditTask(index)}
+                        onClick={(e) => handleEditTask(index)}
                         className="text-yellow-400 hover:text-yellow-500 transition-colors duration-300"
                       >
                         <AiOutlineEdit size={24} />
                       </button>
 
                       <button
-                        onClick={() => handleDeleteTask(index)}
+                        onClick={(e) => handleDeleteTask(e, index)}
                         className="text-red-400 hover:text-red-500 transition-colors duration-300"
                       >
                         <AiOutlineDelete size={24} />
@@ -185,14 +187,14 @@ const Home = () => {
                     <span className="cursor-pointer text-left text-white">{task.title}</span>
                     <div className="flex space-x-2">
                       <button
-                        onClick={() => handleToggleComplete(index)}
+                        onClick={(e) => handleToggleComplete(e, index)}
                         className="text-green-400 hover:text-green-500 transition-colors duration-300"
                       >
                         <FiCheckCircle size={24} />
                       </button>
 
                       <button
-                        onClick={() => handleDeleteTask(index)}
+                        onClick={(e) => handleDeleteTask(e, index)}
                         className="text-red-400 hover:text-red-500 transition-colors duration-300"
                       >
                         <AiOutlineDelete size={24} />
@@ -221,13 +223,13 @@ const Home = () => {
               initial={{ scale: 0.8 }}
               animate={{ scale: 1 }}
               exit={{ scale: 0.8 }}
-              className="bg-gray-800 p-6 rounded-lg shadow-lg w-11/12 max-w-md text-white"
+              className="bg-gray-800 p-6 rounded-lg shadow-lg w-11/12 max-w-lg"
             >
-              <h2 className="text-2xl font-semibold mb-4">{selectedTask?.title}</h2>
-              <p>{selectedTask?.description}</p>
+              <h2 className="text-xl font-bold mb-4">{selectedTask.title}</h2>
+              <p className="text-gray-300">{selectedTask.description}</p>
               <button
                 onClick={closeModal}
-                className="mt-6 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-300"
+                className="mt-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg"
               >
                 Close
               </button>
