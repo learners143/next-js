@@ -44,7 +44,8 @@ const Home = () => {
     setInputDescription('');
   };
 
-  const handleEditTask = (index) => {
+  const handleEditTask = (e,index) => {
+    e.stopPropagation();
     const task = tasks[index];
     setInputTitle(task.title);
     setInputDescription(task.description);
@@ -150,7 +151,7 @@ const Home = () => {
                       </button>
 
                       <button
-                        onClick={(e) => handleEditTask(index)}
+                        onClick={(e) => handleEditTask(e, index)}
                         className="text-yellow-400 hover:text-yellow-500 transition-colors duration-300"
                       >
                         <AiOutlineEdit size={24} />
