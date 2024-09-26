@@ -9,17 +9,15 @@ const Home = () => {
   const [inputTitle, setInputTitle] = useState('');
   const [inputDescription, setInputDescription] = useState('');
   const [editIndex, setEditIndex] = useState(-1);
-  const [showActive, setShowActive] = useState(true); // Toggle between Active and Completed
-  const [showModal, setShowModal] = useState(false); // Modal visibility state
-  const [selectedTask, setSelectedTask] = useState(null); // For task details in the modal
+  const [showActive, setShowActive] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedTask, setSelectedTask] = useState(null);
 
-  // Load tasks from localStorage on component mount
   useEffect(() => {
     const storedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
     setTasks(storedTasks);
   }, []);
 
-  // Store tasks in localStorage on task state change
   useEffect(() => {
     localStorage.setItem('tasks', JSON.stringify(tasks));
   }, [tasks]);
@@ -44,7 +42,7 @@ const Home = () => {
     setInputDescription('');
   };
 
-  const handleEditTask = (e,index) => {
+  const handleEditTask = (index, e) => {
     e.stopPropagation();
     const task = tasks[index];
     setInputTitle(task.title);
@@ -52,16 +50,16 @@ const Home = () => {
     setEditIndex(index);
   };
 
-  const handleToggleComplete = (e, index) => {
-    e.stopPropagation(); // Prevent modal from opening
+  const handleToggleComplete = (index, e) => {
+    e.stopPropagation();
     const updatedTasks = tasks.map((task, idx) =>
       idx === index ? { ...task, completed: !task.completed } : task
     );
     setTasks(updatedTasks);
   };
 
-  const handleDeleteTask = (e, index) => {
-    e.stopPropagation(); // Prevent modal from opening
+  const handleDeleteTask = (index, e) => {
+    e.stopPropagation();
     const updatedTasks = tasks.filter((_, idx) => idx !== index);
     setTasks(updatedTasks);
   };
@@ -81,10 +79,9 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center justify-center py-10 px-5">
-      <div className="max-w-xl w-full bg-gray-800 shadow-lg rounded-lg p-6">
+      <div className="max-w-3xl w-full bg-gray-800 shadow-lg rounded-lg p-6">
         <h1 className="text-3xl font-bold text-center mb-6">Responsive To-Do List</h1>
 
-        {/* Input and Add Button */}
         <div className="flex mb-4 space-y-2 flex-col md:flex-row">
           <input
             type="text"
@@ -102,13 +99,12 @@ const Home = () => {
           />
           <button
             onClick={handleAddTask}
-            className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-3 rounded-lg transition-colors duration-300 flex items-center justify-center"
+            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-3 rounded-lg transition-colors duration-300 flex items-center justify-center"
           >
             <AiOutlinePlus size={24} />
           </button>
         </div>
 
-        {/* Toggle Buttons for Active and Completed Tasks */}
         <div className="flex justify-center space-x-4 mb-6">
           <button
             className={`px-4 py-2 rounded-lg text-white font-semibold transition-colors duration-300 ${showActive ? 'bg-blue-600' : 'bg-gray-700 hover:bg-blue-500'}`}
@@ -124,7 +120,6 @@ const Home = () => {
           </button>
         </div>
 
-        {/* Task List with Animation between Active and Completed */}
         <AnimatePresence exitBeforeEnter>
           {showActive ? (
             <motion.div
@@ -144,21 +139,19 @@ const Home = () => {
                     <span className="cursor-pointer text-left text-white">{task.title}</span>
                     <div className="flex space-x-2">
                       <button
-                        onClick={(e) => handleToggleComplete(e, index)}
+                        onClick={(e) => handleToggleComplete(index, e)}
                         className="text-green-400 hover:text-green-500 transition-colors duration-300"
                       >
                         <FiCircle size={24} />
                       </button>
-
                       <button
-                        onClick={(e) => handleEditTask(e, index)}
+                        onClick={(e) => handleEditTask(index, e)}
                         className="text-yellow-400 hover:text-yellow-500 transition-colors duration-300"
                       >
                         <AiOutlineEdit size={24} />
                       </button>
-
                       <button
-                        onClick={(e) => handleDeleteTask(e, index)}
+                        onClick={(e) => handleDeleteTask(index, e)}
                         className="text-red-400 hover:text-red-500 transition-colors duration-300"
                       >
                         <AiOutlineDelete size={24} />
@@ -188,14 +181,13 @@ const Home = () => {
                     <span className="cursor-pointer text-left text-white">{task.title}</span>
                     <div className="flex space-x-2">
                       <button
-                        onClick={(e) => handleToggleComplete(e, index)}
+                        onClick={(e) => handleToggleComplete(index, e)}
                         className="text-green-400 hover:text-green-500 transition-colors duration-300"
                       >
                         <FiCheckCircle size={24} />
                       </button>
-
                       <button
-                        onClick={(e) => handleDeleteTask(e, index)}
+                        onClick={(e) => handleDeleteTask(index, e)}
                         className="text-red-400 hover:text-red-500 transition-colors duration-300"
                       >
                         <AiOutlineDelete size={24} />
@@ -211,7 +203,6 @@ const Home = () => {
         </AnimatePresence>
       </div>
 
-      {/* Modal for Task Details */}
       <AnimatePresence>
         {showModal && (
           <motion.div
@@ -224,13 +215,13 @@ const Home = () => {
               initial={{ scale: 0.8 }}
               animate={{ scale: 1 }}
               exit={{ scale: 0.8 }}
-              className="bg-gray-800 p-6 rounded-lg shadow-lg w-11/12 max-w-lg"
+              className="bg-gray-800 p-6 rounded-lg shadow-lg w-11/12 max-w-md text-white"
             >
-              <h2 className="text-xl font-bold mb-4">{selectedTask.title}</h2>
-              <p className="text-gray-300">{selectedTask.description}</p>
+              <h2 className="text-2xl font-semibold mb-4">{selectedTask?.title}</h2>
+              <p className="text-gray-300">{selectedTask?.description}</p>
               <button
                 onClick={closeModal}
-                className="mt-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg"
+                className="mt-6 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-300"
               >
                 Close
               </button>
