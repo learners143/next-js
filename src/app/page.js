@@ -87,7 +87,7 @@ const Home = () => {
             type="text"
             value={inputTitle}
             onChange={(e) => setInputTitle(e.target.value)}
-            className="flex-grow border border-gray-600 p-3 rounded-l-lg bg-gray-700 text-white outline-none focus:ring-2 focus:ring-blue-400 mb-2 md:mb-0"
+            className="flex-grow border m-2 border-gray-600 p-3 rounded-l-lg bg-gray-700 text-white outline-none focus:ring-2 focus:ring-blue-400 mb-2 md:mb-0"
             placeholder="Task Title"
           />
           <input
